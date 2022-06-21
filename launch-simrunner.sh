@@ -39,9 +39,9 @@ do
 done
 
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$PUBDNS <<EOF
-sudo yum install -y git maven java-11-amazon-corretto-headless
-sudo alternatives --set java /usr/lib/jvm/java-11-amazon-corretto.x86_64/bin/java
-sudo alternatives --set javac /usr/lib/jvm/java-11-amazon-corretto.x86_64/bin/javac
+sudo yum install -y git maven java-17-amazon-corretto-devel
+sudo alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/java
+sudo alternatives --set javac /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/javac
 git clone https://github.com/schambon/SimRunner.git
 cd SimRunner
 mvn clean package
