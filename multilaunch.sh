@@ -1,6 +1,7 @@
 # some default values
 PURPOSETAG=other
 NUM_HOSTS=1
+EXPIREON=2023-12-31
 
 source config.sh
 
@@ -9,7 +10,7 @@ export AWS_PAGER=""
 echo "Spinning up $NUM_HOSTS AWS instance(s) for SimRunner"
 aws ec2 run-instances --image-id $IMAGE --count $NUM_HOSTS --instance-type $INSTTYPE --key-name $KEYNAME \
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 16, "VolumeType": "gp3"}}]' \
-  --tag-specification  "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2021-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" 
+  --tag-specification  "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"$EXPIREON\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" 
 
 #sleep 20
 sleep 10
@@ -40,12 +41,12 @@ do
   done
 
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$PUBDNS <<EOF
-sudo yum install -y git maven java-17-amazon-corretto-devel
+sudo yum install -y git java-17-amazon-corretto-devel
 sudo alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/java
 sudo alternatives --set javac /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/javac
 git clone https://github.com/schambon/SimRunner.git
 cd SimRunner
-mvn clean package
+./mvnw clean package
 cp bin/SimRunner.jar ~
 EOF
 done

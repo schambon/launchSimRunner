@@ -7,7 +7,7 @@ export AWS_PAGER=""
 echo "Spinning up AWS instance for SimRunner"
 aws ec2 run-instances --image-id $IMAGE --count 1 --instance-type $INSTTYPE --key-name $KEYNAME \
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 16, "VolumeType": "gp3"}}]' \
-  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2021-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
+  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2023-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
 
 #sleep 20
 sleep 10
