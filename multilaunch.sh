@@ -41,13 +41,11 @@ do
   done
 
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$PUBDNS <<EOF
-sudo yum install -y git java-17-amazon-corretto-devel
-sudo alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/java
-sudo alternatives --set javac /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/javac
-git clone https://github.com/schambon/SimRunner.git
-cd SimRunner
-./mvnw clean package
-cp bin/SimRunner.jar ~
+sudo dnf install -y docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ec2-user
+newgrp docker
 EOF
 done
 

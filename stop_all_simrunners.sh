@@ -9,7 +9,8 @@ echo $res | jq -r ".Reservations[].Instances[].PublicDnsName"
 
 for inst in $(echo $res | jq -r ".Reservations[].Instances[].PublicDnsName");
 do
-ssh -fn ec2-user@$inst "killall java"
+#ssh -fn ec2-user@$inst "killall java"
+ssh -i $KEYPATH -fn ec2-user@$inst "docker stop simrunner && docker rm simrunner"
 done
 
-echo "Simrunner killed"
+echo "Simrunner stopped"

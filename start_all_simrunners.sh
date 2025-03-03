@@ -16,7 +16,8 @@ echo $res | jq -r ".Reservations[].Instances[].PublicDnsName"
 for inst in $(echo $res | jq -r ".Reservations[].Instances[].PublicDnsName");
 do
 #ssh -fn ec2-user@$inst "nohup java -jar /home/ec2-user/SimRunner.jar $1 > simrunner.log 2>&1"
-ssh -fn ec2-user@$inst "nohup java -Xmx12G -jar /home/ec2-user/SimRunner.jar workload.json > simrunner.log 2>&1"
+#ssh -fn ec2-user@$inst "nohup java -jar /home/ec2-user/SimRunner.jar workload.json > simrunner.log 2>&1"
+ssh -i $KEYPATH -fn ec2-user@$inst "docker run -p 3000:3000 --name simrunner -d -it --mount type=bind,source=/home/ec2-user/workload.json,target=/config.json sylvainchambon/simrunner:latest"
 done
 
 echo "Simrunner started"

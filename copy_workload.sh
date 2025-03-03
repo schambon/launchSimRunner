@@ -14,6 +14,6 @@ if [ -n "$1" ]; then
     echo "scp'ing $1 to hosts"
     for dns in $(echo $res | jq -r ".Reservations[].Instances[].PublicDnsName");
     do
-      scp $1 $dns:workload.json
+      scp -i $KEYPATH $1 ec2-user@$dns:workload.json
     done
 fi
